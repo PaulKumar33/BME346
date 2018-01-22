@@ -46,17 +46,46 @@ class bandIntensity:
     
     def outputValue(self):
         print("Average intensity: {}".format(mean))
+        
+        
+'''note now i want to add functionallity that can read different columns of data so there should be no processing'''
 
+class getDocument:
+    
+    global destination
+    
+    def getFile(self):
+        print('please enter the file desintination')
+        destination = (input())
+        return destination
+        #destination = process(destination)
+       
+    def process(self, string):
+        #thisfunction is essential as it changes the file destination to one which python can read
+        s = string
+        #n = len(s)
+        new_str = s.replace('\\', '/')
+        print(new_str)
+        return new_str
+        
+
+                        
 
 class main:
-    """Calls the intensity function"""
+    """Calls the intensity and getdocument function"""
+    document = getDocument()
+    location = document .getFile()
+    document.process(location)
+    
+    
+    '''
     intensity = bandIntensity()
     data = 'C:/Users/paulk/Documents/DNAmean.txt'
     intensity.readText(data)
     intensity.getIntensity()
     intensity.addBackground()
     intensity.getMeanIntensity()
-    intensity.outputValue()
+    intensity.outputValue()'''
     
     
     
