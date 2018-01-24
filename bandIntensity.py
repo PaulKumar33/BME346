@@ -9,32 +9,24 @@ class bandIntensity:
     array = []
     nArray = []    
     
-    def checkNumber(self, s):
-        #trys whether an entry is a string or a number
-        #true if number flase else
-        try:
-            float(s)
-            return True
-        except ValueError:
-            pass
-     
-        try:
-            import unicodedata
-            unicodedata.numeric(s)
-            return True
-        except (TypeError, ValueError):
-            pass     
-        return False
     
+        
     def readText(self, text): 
         with open(text, 'r') as file:
-            data = file.readlines()
-            for line in data:                
-                if self.checkNumber(line) == True:
-                    continue
-                else:
-                    array.extend([float(i) for i in line.split()])                
-    
+            tArray = []
+            data = file.read().split('\n')
+            for element in data: 
+                print(element)
+                tArray.extend(element.split())
+            #elements occur at 2, 7, 12, 17.... (2 + n5) is the index of intrest
+            for elm in range(len(tArray)):
+                if((elm-1)%5 == 0 or elm == 1):
+                    array.extend(tArray[elm].split())
+            
+            array.remove('mean')
+                
+        
+        
     def getIntensity(self):        
         #create a new array, add zero elements until
         #it reaches the size of the input
@@ -77,12 +69,10 @@ class getDocument:
         print('please enter the file desintination')
         destination = (input())
         return destination
-        #destination = process(destination)
        
     def process(self, string):
         #thisfunction is essential as it changes the file destination to one which python can read
         s = string
-        #n = len(s)
         new_str = s.replace('\\', '/')
         print(new_str)
         return new_str
@@ -96,6 +86,8 @@ class main:
     location = document.getFile()
     doc = document.process(location)
     
+    
+    print("this is the doc: ", doc)
     #calls the intensity class
     inten = bandIntensity()
     inten.readText(doc)
