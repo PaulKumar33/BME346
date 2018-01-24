@@ -7,18 +7,11 @@ class bandIntensity:
     global array
     
     array = []
-    nArray = []
+    nArray = []    
     
-    def readText(self, text): 
-        with open(text, 'r') as file:
-            data = file.readlines()
-            for line in data:                
-                if checkNumber(line) == True:
-                    continue
-                else:
-                    array.extend([float(i) for i in line.split()])    
-                    
-    def checkNumber(s):
+    def checkNumber(self, s):
+        #trys whether an entry is a string or a number
+        #true if number flase else
         try:
             float(s)
             return True
@@ -32,7 +25,15 @@ class bandIntensity:
         except (TypeError, ValueError):
             pass     
         return False
-            
+    
+    def readText(self, text): 
+        with open(text, 'r') as file:
+            data = file.readlines()
+            for line in data:                
+                if self.checkNumber(line) == True:
+                    continue
+                else:
+                    array.extend([float(i) for i in line.split()])                
     
     def getIntensity(self):        
         #create a new array, add zero elements until
