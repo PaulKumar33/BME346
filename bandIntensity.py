@@ -8,13 +8,31 @@ class bandIntensity:
     
     array = []
     nArray = []
-        
     
     def readText(self, text): 
         with open(text, 'r') as file:
             data = file.readlines()
-            for line in data:
-                array.extend([float(i) for i in line.split()])            
+            for line in data:                
+                if checkNumber(line) == True:
+                    continue
+                else:
+                    array.extend([float(i) for i in line.split()])    
+                    
+    def checkNumber(s):
+        try:
+            float(s)
+            return True
+        except ValueError:
+            pass
+     
+        try:
+            import unicodedata
+            unicodedata.numeric(s)
+            return True
+        except (TypeError, ValueError):
+            pass     
+        return False
+            
     
     def getIntensity(self):        
         #create a new array, add zero elements until
@@ -74,8 +92,12 @@ class getDocument:
 class main:
     """Calls the intensity and getdocument function"""
     document = getDocument()
-    location = document .getFile()
-    document.process(location)
+    location = document.getFile()
+    doc = document.process(location)
+    
+    #calls the intensity class
+    inten = bandIntensity()
+    inten.readText(doc)
     
     
     '''
