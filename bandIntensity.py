@@ -1,3 +1,5 @@
+import tkinter
+
 
 class bandIntensity:
     """this class take a txt file input and calculates the values
@@ -33,8 +35,10 @@ class bandIntensity:
         n = len(array)
         #print(n)
         for i in range(n):
-            data = 255 - array[i]
+            data = 255 - float(array[i])
             nArray.append(data)
+            
+        print('your intensity array: ', nArray)
         
     def addBackground(self):
         ##changes the nArray by the value of the background intensity
@@ -57,6 +61,7 @@ class bandIntensity:
     
     def outputValue(self):
         print("Average intensity: {}".format(mean))
+        print("The Values of the mean intensity array: ", nArray)
         
         
 '''note now i want to add functionallity that can read different columns of data so there should be no processing'''
@@ -76,11 +81,70 @@ class getDocument:
         new_str = s.replace('\\', '/')
         print(new_str)
         return new_str
-        
 
-                        
+class gui(tkinter.Tk):
+    def __init__(self, parent):
+        tkinter.Tk.__init__(self, parent)
+        self.parent = parent
+        
+    def initializeGUI(self):
+        ##this method contains all gui elements
+        self.grid()
+        
+        self.entryVariable = tkinter.StringVar()
+        self.entry = tkinter.Entry(self, textvariable = self.entryVariable)
+        #for some reason i must include EW
+        #this is simply positioning
+        self.entry.grid(column = 0, row = 0, sticky = 'EW')
+        self.entry.bind("<Return>", self.OnPressEnter)
+        #self.entryVariable.set(u"enter text here: ")
+        
+        
+        ##adds a button object to the window
+        ##adding add button click adds event listener
+        button = tkinter.Button(self, text=u"Clik here", command = self.OnButtonClick)
+        button.grid(column=1, row=0)
+        
+        #binding to the label widget
+        self.labelVariable = tkinter.StringVar()
+        #ensures the label is set
+        label = tkinter.Label(self, textvariable = self.labelVariable, anchor="w", fg = "white", bg = "blue")
+        label.grid(column = 0, row = 1, columnspan = 2, sticky="EW")
+        self.labelVariable.set(u"hello !")
+        
+        self.grid_columnconfigure(0, weight = 1)        
+        ##resizes horizontally but not vertically
+        ##first entry is bool for horiz and second is vertical
+        self.resizable(True, False)
+        self.update()
+        self.geometry(self.geometry())
+        self.entry.focus_set()
+        self.entry.selection_range(0, tkinter.END)
+        
+        
+        
+    def OnButtonClick(self): 
+        #self.entryVariable.set("")
+        print(self.entryVariable)
+        self.labelVariable.set(self.entryVariable.get())
+        self.entry.focus_set()
+        self.entry.selection_range(0, tkinter.END)        
+        
+    def OnPressEnter(self, event):
+        #self.entryVariable.set("")
+        print(self.entryVariable.get())
+        self.labelVariable.set(self.entryVariable.get())
+        self.entry.focus_set()
+        self.entry.selection_range(0, tkinter.END)
 
 class main:
+    '''Calls the gui class'''
+    guiMain = gui(None)
+    guiMain.title("Band Intensity Widget")
+    guiMain.initializeGUI()
+    ##allows each portion of the gui to loop indefinately
+    guiMain.mainloop()
+    
     """Calls the intensity and getdocument function"""
     document = getDocument()
     location = document.getFile()
@@ -91,16 +155,11 @@ class main:
     #calls the intensity class
     inten = bandIntensity()
     inten.readText(doc)
+    inten.getIntensity()
+    inten.addBackground()
+    inten.getMeanIntensity()
+    inten.outputValue()
     
-    
-    '''
-    intensity = bandIntensity()
-    data = 'C:/Users/paulk/Documents/DNAmean.txt'
-    intensity.readText(data)
-    intensity.getIntensity()
-    intensity.addBackground()
-    intensity.getMeanIntensity()
-    intensity.outputValue()'''
     
     
     
