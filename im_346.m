@@ -159,3 +159,52 @@ for i2 = 1:nbars2
     x2 = (1:ngroups2) - (groupwidth2)/2 + (2*i2 - 1) * (groupwidth2)/(2*nbars2);
     errorbar(x2, data_hek(:,i2), data_hek_error(:,i2));
 end
+
+%%
+
+nax_array = [max(corr10(:)), max(corr11(:)), max(corr20(:)), max(corr21(:)), max(corr30(:)), max(corr31(:)), max(corr40(:)), max(corr41(:)), max(corr50(:)), max(corr51(:)), max(corr61(:))];
+x = linspace(1,12,11);
+
+%max of them occur at element 3 and 8
+max_hela = nax_array(3);
+max_hek = nax_array(8);
+
+relative_max_hela = zeros(3);
+relative_max_hek = zeros(6);
+n1 = 0;
+n2 = 0;
+
+for i = 1:11
+    if(i >= 1 && i <= 4)
+        if(i ~= 3)
+            n1 = n1 + 1;
+            relative_max_hela(n1) = nax_array(i)/nax_array(3);
+        end
+    end
+    
+    if(i >= 5 && i <= 11)
+        if(i~=7)
+            n2 = n2 + 1;
+            relative_max_hek(n2) = nax_array(i)/nax_array(7);
+        end
+    end
+end
+
+%%
+new_hek = zeros(6,1);
+new_hela = zeros(3,1);
+for i = 1:9
+    if(i <= 6)
+        new_hek(i) = relative_max_hek(i,1);
+    else
+        new_hela(i) = relative_max_hela(i-6,1);
+    end
+end
+
+[hh, ph] = ttest(new_hek(:));
+
+[he, pe] = ttest(new_hela(:));
+
+
+
+
